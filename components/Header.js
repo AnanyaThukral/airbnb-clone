@@ -26,8 +26,18 @@ const Header = () => {
     const resetInput = () => {
         setSearchInput('');
     }
+
+    //query to pass variables through URL
     const search = () => {
-        router.push('/search')
+        router.push({
+            pathname: '/search',
+            query: {
+                location: searchInput,
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString(),
+                noOfGuests
+            }
+        })
     }
 
     return (
