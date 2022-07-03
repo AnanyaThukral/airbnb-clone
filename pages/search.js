@@ -3,8 +3,9 @@ import React from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import format from 'date-fns/format';
+import InfoCard from '../components/InfoCard';
 
-const Search = () => {
+const Search = ({searchResults}) => {
     const router = useRouter();
 
     // ES6 Destructuring
@@ -12,6 +13,8 @@ const Search = () => {
 
     //pull the date from query/URL
     // console.log(router.query); 
+
+    console.log(searchResults);
 
     //format dates
     const formattedStartDate = format(new Date(startDate), "dd MMMM yy")
@@ -21,7 +24,7 @@ const Search = () => {
 
     return (
         <div>
-            <Header/>
+            <Header placeholder={`${location} | ${range} | ${noOfGuests} guests`}/>
             <main className='flex'>
                 <section className='flex-grow pt-14 px-6'>
                     <p className='text-xs'>300+ Stays - {range} - for {noOfGuests} guests</p>
@@ -33,6 +36,12 @@ const Search = () => {
                         <p className='button'>Rooms and Beds</p>
                         <p className='button'>More filters</p>
                     </div>
+                    <div className='flex flex-col'>
+                        {searchResults.map(({img, location, title, description, star, price, total}) => (
+                            <InfoCard key = {img} img = {
+                            img} location = {location} title = {title} description = {description} star = {star} price = {price} total = {total}/>
+                        ))}
+                    </div>
                 </section>
             </main>
             <Footer/>
@@ -41,3 +50,15 @@ const Search = () => {
 };
 
 export default Search;
+
+//server side rendering await (async function)
+//server step (in between)
+export async function getServerSideProps(){
+    const searchResults = await fetch("https://links.papareact.com/isz").then(res => res.json()); //gives a json object
+    //pass in back to page
+    return {
+        props: {
+            searchResults,
+        }
+    }
+}
