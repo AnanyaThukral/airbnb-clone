@@ -4,6 +4,7 @@ import { SearchIcon, MenuIcon, GlobeAltIcon, UserCircleIcon, UserIcon } from '@h
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file 
 import { DateRangePicker } from 'react-date-range';
+import {useRouter} from "next/dist/client/router";
 
 const Header = () => {
 
@@ -11,6 +12,7 @@ const Header = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [noOfGuests, setNoOfGuests] = useState(1);
+    const router = useRouter();
  
     const handleSelect = (ranges) => {
         setStartDate(ranges.selection.startDate) //coming from the library
@@ -24,11 +26,14 @@ const Header = () => {
     const resetInput = () => {
         setSearchInput('');
     }
+    const search = () => {
+        router.push('/search')
+    }
 
     return (
         <header className='sticky top-0 z-50 grid grid-cols-3 bg-white shadow-md py-5 px-5 md:px-10'>
             {/* left */}
-            <div className = "relative flex items-center h-10 cursor-pointer">
+            <div onClick = {() => router.push("/")}className = "relative flex items-center h-10 cursor-pointer">
                 <Image src="https://media.designrush.com/inspiration_images/135187/conversions/_1511452487_364_Airbnb-mobile.jpg"
                 // layout = "fill"
                 height={100}
@@ -67,7 +72,7 @@ const Header = () => {
                 </div>
                <div className='flex'>
                 <button className='flex-grow text-gray-500' onClick={resetInput}>Cancel</button>
-                <button className='flex-grow text-red-400'>Search</button>
+                <button onClick={search} className='flex-grow text-red-400'>Search</button>
                 </div>
             </div>}
         </header>
